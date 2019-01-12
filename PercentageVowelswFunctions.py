@@ -25,6 +25,9 @@ def get_text():
             get_text()
     return ans
 
+#No precond
+#asks the user if they want more informatation about the charathers whether they come from a test file or text
+#Returns true if the user wants more information or false if the user deosn't
 def moreinfo():
     print('''Would you like more info?
     Y/N''')
@@ -74,16 +77,20 @@ def gettextfile():
     consonants = 0
     if(myfile.readable() == False):
         print('There was some error with the file and it was unreadable. Please try again.')
+        myfile.close()
         gettextfile()
     else:
         for line in myfile:
             currentline = line.strip()
             currentline = line.replace(' ','')
+            print("Current line is {}".format(currentline))
+            #An error occurs here
             tup1 = numvowelsconsonants(currentline)
             vowels+=tup1[0]
             consonants+=tup1[1]
 
-    return (vowels,consonants)
+    myfile.close()
+    return (vowels,consonants,path)
 
 def intro():
     print('Would you like to enter some text or use a file? text/file')
@@ -103,6 +110,18 @@ def intro():
     else:
         print('none')
         return None
+
+def letmoreinfofile(path):
+    print('called')
+    myfile = open(path,'r')
+    print('reached')
+    string = myfile.readlines()
+    print("string 1: {}".format(string))
+    string.strip()
+    print(string)
+    string  = string.replace(' ','')
+    print(string)
+    letmoreinfo(string)
 
 
 if(intro() == True):
@@ -126,5 +145,5 @@ elif(intro() == False):
         percentc = (1-percentv)
         print('There are {} vowels and {} consonants'.format(data[0],data[1]))
         print('The word is {vowels}% vowels and {cons}% consonants'.format(vowels = percentv*100,cons = percentc*100))
-        letmoreinfo(stuff)
+        letmoreinfofile(data[2])
 
